@@ -11,30 +11,23 @@
     <?= $this->fetch('headjs'); ?>
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <?php
-                    $siteTitleContent = $siteTitle;
-                if (!empty($siteTitleImage)) {
-                    $siteTitleContent = $this->Html->image($siteTitleImage);
-                }
-                if (empty($siteTitleLink)) {
-                    echo $this->Html->tag('span', $siteTitleContent, ['class' => 'navbar-brand', 'escape' => false]);
-                } else {
-                    echo $this->Html->link($siteTitleContent, $siteTitleLink, ['class' => 'navbar-brand', 'escape' => false]);
-                }
-                ?>
-            </div>
+    <nav class="navbar navbar-light bg-light" role="navigation">
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <?php
+                $siteTitleContent = $siteTitle;
+            if (!empty($siteTitleImage)) {
+                $siteTitleContent = $this->Html->image($siteTitleImage, ['class' => 'navbar-brand mr-auto']);
+            }
+            if (empty($siteTitleLink)) {
+                echo $this->Html->tag('span', $siteTitleContent, ['class' => 'navbar-brand mr-auto', 'escape' => false]);
+            } else {
+                echo $this->Html->link($siteTitleContent, $siteTitleLink, ['class' => 'navbar-brand mr-auto', 'escape' => false]);
+            }
+            ?>
 
             <?= $this->element('topbar'); ?>
-        </div>
     </nav>
 
     <div class="container-fluid">
