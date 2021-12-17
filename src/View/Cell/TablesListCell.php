@@ -14,10 +14,12 @@ class TablesListCell extends Cell
      *
      * @param array $tables Tables list.
      * @param array $blacklist Blacklisted tables list.
+     * @param string $name The name of the current controller.
      * @return $this
      */
-    public function display(?array $tables = null, ?array $blacklist = null)
+    public function display(?array $tables = null, ?array $blacklist = null, string $name)
     {
+        $this->set('name', $name);
         if (empty($tables)) {
             $connection = ConnectionManager::get('default');
             $schema = $connection->getSchemaCollection();

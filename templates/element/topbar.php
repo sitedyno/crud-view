@@ -8,7 +8,7 @@ if (empty($utilityNavigation)) {
     <?php
     foreach ($utilityNavigation as $entry) {
         if ($entry instanceof \CrudView\Menu\MenuItem) {
-            echo $this->element('menu/item', ['item' => $entry]);
+            echo $this->element('menu/nav-item', ['item' => $entry]);
         } elseif ($entry instanceof \CrudView\Menu\MenuDropdown) {
             echo $this->element('menu/dropdown', ['dropdown' => $entry]);
         } else {

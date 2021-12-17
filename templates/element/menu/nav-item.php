@@ -1,10 +1,13 @@
 <?php
 $options = $item->getOptions();
-if ($this->getName() === $item->getUrl()['controller']) {
-    $classes[] = $options['class'] ?? null;
+$name = $name ?? $this->getName();
+
+$classes[] = $options['class'] ?? null;
+$classes[] = 'nav-link';
+if ($name === $item->getUrl()['controller']) {
     $classes[] = 'active';
-    $options['class'] = implode(' ', $classes);
 }
+$options['class'] = implode(' ', $classes);
 ?>
 <li class="nav-item">
     <?php if ($item->getUrl() === null) : ?>

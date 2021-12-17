@@ -18,12 +18,13 @@ if ($sidebarNavigation === false) {
                         (array)Hash::get($actionConfig, 'scaffold.tables_blacklist'),
                         (array)Configure::read('CrudView.tablesBlacklist')
                     ),
+                    'name' => $this->getName(),
                 ]) ?>
             <?php else : ?>
                 <?php
                 foreach ($sidebarNavigation as $entry) {
                     if ($entry instanceof MenuItem) {
-                        echo $this->element('menu/item', ['item' => $entry]);
+                        echo $this->element('menu/nav-item', ['item' => $entry]);
                     } elseif ($entry instanceof MenuDivider) {
                         echo '<hr />';
                     } else {

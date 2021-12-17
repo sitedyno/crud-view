@@ -39,7 +39,7 @@ class MenuItem
     {
         $this->title = $title;
         $this->url = $url;
-        $this->options = array_merge(['class' => 'nav-link'], $options);
+        $this->options = $options;
     }
 
     /**
