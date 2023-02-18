@@ -60,7 +60,8 @@ h2 .actions {
     min-width: 90px !important;
 }
 
-.search-filters .form-inline select.autocomplete {
+.search-filters .form-inline select.autocomplete,
+.search-filters .form-inline div.autocomplete {
     min-width: 150px;
 }
 

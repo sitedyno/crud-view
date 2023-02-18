@@ -33,6 +33,32 @@ var CrudView = {
 
     autocomplete: function (selector) {
         $(selector).each(function (i, ele) {
+            new TomSelect(ele, {
+                maxItems: 1,
+                create: true,
+                valueField: 'value',
+                labelField: 'label',
+                searchField: 'label',
+                load: function(query, callback) {
+                    var url = $(ele).data('url') + '&' + $(ele).attr('name') + '=' + encodeURIComponent(query);
+                    fetch(url)
+                        .then(function (response) { return response.json()})
+                        .then(function (json) {
+                            results = [];
+                            $(Object.values(json.data)).each(function (i, item) {
+                                results.push({value: item, label: item});
+                            });
+                            callback(results);
+                        }).catch(() => {
+                            callback();
+                        });
+                },
+            });
+        });
+    },
+
+    autocompleteOld: function (selector) {
+        $(selector).each(function (i, ele) {
             var $ele = $(ele);
 
             $ele.select2({
@@ -101,8 +127,9 @@ var CrudView = {
     initialize: function () {
         this.bulkActionForm('.bulk-actions');
         this.flatpickr('.flatpickr');
-        this.select2('select[multiple]:not(.no-select2), select.select2');
+        this.select2('select[multiple]:not(.no-select2), select.select2'); // needs TomSelect version
         this.autocomplete('input.autocomplete, select.autocomplete');
+        // this.autocompleteOld('input.autocomplete, select.autocomplete'); // uncomment for select2
         this.dirtyForms();
         this.dropdown();
         this.tooltip();
