@@ -39,6 +39,7 @@ var CrudView = {
                 valueField: 'value',
                 labelField: 'label',
                 searchField: 'label',
+                selectOnTab: true,
                 load: function(query, callback) {
                     var url = $(ele).data('url') + '&' + $(ele).attr('name') + '=' + encodeURIComponent(query);
                     fetch(url)
