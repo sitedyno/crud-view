@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace CrudView\View\Widget;
 
-use BootstrapUI\View\Widget\DateTimeWidget as BUIDateTimeWidget;
 use Cake\Core\Configure;
 use Cake\View\Form\ContextInterface;
 
-class DateTimeWidget extends BUIDateTimeWidget
+class DateTimeWidget extends \BootstrapUI\View\Widget\DateTimeWidget
 {
     // phpcs:disable
     /**
@@ -111,7 +110,6 @@ class DateTimeWidget extends BUIDateTimeWidget
 
         $clearIcon = $this->clearIcon;
         $toggleIcon = $this->calendarIcon;
-        /** @psalm-suppress PossiblyUndefinedArrayOffset */
         if (isset($datetimePicker['iconClass'])) {
             $toggleIcon = $datetimePicker['iconClass'];
             unset($datetimePicker['iconClass']);
@@ -123,7 +121,6 @@ class DateTimeWidget extends BUIDateTimeWidget
             $this->_templates->add(['datetimePicker' => $this->defaultTemplate]);
         }
 
-        /** @var array $data */
         $data = $this->_templates->addClass($data, 'form-control');
         $wrap = $datetimePicker['data-wrap'] === 'true';
         if ($wrap) {
@@ -137,10 +134,13 @@ class DateTimeWidget extends BUIDateTimeWidget
             }
         } else {
             $data += $datetimePicker;
-            /** @var array $data */
             $data = $this->_templates->addClass($data, 'flatpickr');
         }
 
+        /**
+         * @psalm-suppress PossiblyInvalidArrayOffset
+         * @psalm-suppress PossiblyInvalidArgument
+         */
         $input = $this->_templates->format('input', [
             'name' => $data['name'],
             'type' => 'text',

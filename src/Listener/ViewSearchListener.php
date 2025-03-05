@@ -6,13 +6,8 @@ namespace CrudView\Listener;
 use Cake\Event\EventInterface;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
-use Cake\Utility\Inflector;
 use Crud\Listener\BaseListener;
-use function Cake\I18n\__d;
 
-/**
- * @method \Cake\ORM\Table _model()
- */
 class ViewSearchListener extends BaseListener
 {
     /**
@@ -30,7 +25,7 @@ class ViewSearchListener extends BaseListener
      *
      * @var array
      */
-    protected array $_defaultConfig = [
+    protected $_defaultConfig = [
         'enabled' => null,
         'autocomplete' => true,
         'select2' => true,
@@ -61,7 +56,7 @@ class ViewSearchListener extends BaseListener
      */
     public function afterPaginate(EventInterface $event): void
     {
-        if (!$this->_model()->behaviors()->has('Search')) {
+        if (!$this->_table()->behaviors()->has('Search')) {
             return;
         }
 
@@ -84,17 +79,16 @@ class ViewSearchListener extends BaseListener
      */
     public function fields(): array
     {
-        /** @var array $fields */
-        $fields = $this->getConfig('fields', []);
+        $fields = $this->getConfig('fields') ?: [];
         $config = $this->getConfig();
 
-        $schema = $this->_model()->getSchema();
+        $schema = $this->_table()->getSchema();
         $request = $this->_request();
 
         if ($fields) {
-            $fields = Hash::normalize($fields, default: []);
+            $fields = Hash::normalize($fields);
         } else {
-            $filters = $this->_model()->searchManager()->getFilters($config['collection']);
+            $filters = $this->_table()->searchManager()->getFilters($config['collection']);
 
             foreach ($filters as $filter) {
                 $opts = $filter->getConfig('form');
@@ -112,22 +106,21 @@ class ViewSearchListener extends BaseListener
                 'type' => 'text',
             ];
 
-            if (str_ends_with($field, '_id') && $field !== '_id') {
+            if (substr($field, -3) === '_id' && $field !== '_id') {
                 $input['type'] = 'select';
             }
 
-            $input = $opts + $input;
+            $input = (array)$opts + $input;
 
             $input['value'] = $request->getQuery($field);
 
-            if (!isset($input['options']) && $schema->getColumnType($field) === 'boolean') {
-                $input['options'] = [1 => __d('crud', 'Yes'), 0 => __d('crud', 'No')];
+            if (empty($input['options']) && $schema->getColumnType($field) === 'boolean') {
+                $input['options'] = ['No', 'Yes'];
                 $input['type'] = 'select';
             }
 
-            if (isset($input['options'])) {
-                $input['empty'] ??= $this->getPlaceholder($field);
-
+            if (!empty($input['options'])) {
+                $input['empty'] = true;
                 if (empty($input['class']) && !$config['select2']) {
                     $input['class'] = 'no-select2';
                 }
@@ -137,11 +130,10 @@ class ViewSearchListener extends BaseListener
                 continue;
             }
 
-            if ($input['type'] === 'select' && empty($input['class']) && $config['autocomplete']) {
+            if (empty($input['class']) && $config['autocomplete']) {
                 $input['class'] = 'autocomplete';
             }
 
-            /** @psalm-suppress PossiblyUndefinedArrayOffset */
             if (
                 !empty($input['class'])
                 && strpos($input['class'], 'autocomplete') !== false
@@ -153,7 +145,6 @@ class ViewSearchListener extends BaseListener
                     $input['options'][$input['value']] = $input['value'];
                 }
 
-                /** @psalm-suppress PossiblyInvalidOperand */
                 $input += [
                     'data-input-type' => 'text',
                     'data-tags' => 'true',
@@ -162,18 +153,7 @@ class ViewSearchListener extends BaseListener
                 ];
             }
 
-            if ($input['type'] === 'text') {
-                $input['placeholder'] ??= $this->getPlaceholder($field);
-            }
-            if ($input['type'] === 'select') {
-                $input['empty'] ??= $this->getPlaceholder($field);
-            }
-
-            if (
-                !empty($input['class'])
-                && strpos($input['class'], 'autocomplete') !== false
-                && !isset($input['data-url'])
-            ) {
+            if (!isset($input['data-url'])) {
                 $urlArgs = [];
 
                 $fieldKeys = $input['fields'] ?? ['id' => $field, 'value' => $field];
@@ -192,24 +172,5 @@ class ViewSearchListener extends BaseListener
         }
 
         return $fields;
-    }
-
-    /**
-     * Get placeholder text for a field.
-     *
-     * @param string $field Field name.
-     * @return string
-     */
-    protected function getPlaceholder(string $field): string
-    {
-        if (str_contains($field, '.')) {
-            [, $field] = explode('.', $field);
-        }
-
-        if (str_ends_with($field, '_id') && $field !== '_id') {
-            $field = substr($field, 0, -3);
-        }
-
-        return Inflector::humanize($field);
     }
 }

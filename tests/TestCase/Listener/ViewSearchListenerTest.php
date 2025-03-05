@@ -15,17 +15,17 @@ use CrudView\Listener\ViewSearchListener;
  */
 class ViewSearchListenerTest extends TestCase
 {
-    protected array $fixtures = ['plugin.CrudView.Blogs'];
+    protected $fixtures = ['plugin.CrudView.Blogs'];
 
     /**
      * @var \Cake\Controller\Controller;
      */
-    protected Controller $controller;
+    protected $controller;
 
     /**
      * @var \CrudView\Listener\ViewSearchListener
      */
-    protected ViewSearchListener $listener;
+    protected $listener;
 
     public function setUp(): void
     {
@@ -39,8 +39,7 @@ class ViewSearchListenerTest extends TestCase
             'params' => ['controller' => 'Blogs', 'action' => 'index', 'plugin' => null, '_ext' => null],
         ]);
 
-        $this->controller = new Controller($request, 'Blogs');
-        $this->controller->loadComponent('Crud.Crud');
+        $this->controller = new Controller($request, null, 'Blogs');
 
         $this->listener = new ViewSearchListener($this->controller);
 
@@ -49,93 +48,26 @@ class ViewSearchListenerTest extends TestCase
 
     public function testFields()
     {
-        $this->listener->setConfig(['fields' => [
-            'name',
-            'auto' => ['class' => 'autocomplete'],
-            'is_active',
-            'user_id',
-            'custom_select' => ['empty' => false, 'type' => 'select'],
-        ]]);
+        $this->listener->setConfig(['fields' => ['category_id']]);
 
         $fields = $this->listener->fields();
         $expected = [
-            'name' => [
-                'required' => false,
-                'type' => 'text',
-                'value' => null,
-                'placeholder' => 'Name',
-            ],
-            'auto' => [
-                'class' => 'autocomplete',
-                'required' => false,
-                'type' => 'select',
-                'value' => null,
-                'data-input-type' => 'text',
-                'data-tags' => 'true',
-                'data-allow-clear' => 'true',
-                'data-placeholder' => '',
-                'empty' => 'Auto',
-                'data-url' => '/blogs/lookup.json?id=auto&value=auto',
-            ],
-            'is_active' => [
-                'required' => false,
-                'type' => 'select',
-                'value' => null,
-                'options' => [1 => 'Yes', 0 => 'No'],
-                'empty' => 'Is Active',
-            ],
-            'user_id' => [
+            'category_id' => [
                 'required' => false,
                 'type' => 'select',
                 'value' => null,
                 'class' => 'autocomplete',
-                'empty' => 'User',
-                'data-url' => '/blogs/lookup.json?id=user_id&value=user_id',
-            ],
-            'custom_select' => [
-                'empty' => false,
-                'type' => 'select',
-                'required' => false,
-                'value' => null,
-                'class' => 'autocomplete',
-                'data-url' => '/blogs/lookup.json?id=custom_select&value=custom_select',
+                'data-url' => '/blogs/lookup.json?id=category_id&value=category_id',
             ],
         ];
-        $this->assertSame($expected, $fields);
-
-        $this->listener->setConfig([
-            'fields' => ['name' => ['data-url' => '/custom']],
-        ], null, true);
-
-        $fields = $this->listener->fields();
-        $expected['name']['data-url'] = '/custom';
         $this->assertEquals($expected, $fields);
 
         $this->listener->setConfig([
-            'autocomplete' => false,
-            'fields' => [
-                'user_id',
-                'custom_select' => ['empty' => false, 'type' => 'select', 'class' => 'autocomplete'],
-            ],
-        ], merge: false);
+            'fields' => ['category_id' => ['data-url' => '/custom']],
+        ], null, true);
 
         $fields = $this->listener->fields();
-        $expected = [
-            'user_id' => [
-                'required' => false,
-                'type' => 'select',
-                'value' => null,
-                'empty' => 'User',
-            ],
-            'custom_select' => [
-                'empty' => false,
-                'type' => 'select',
-                'class' => 'autocomplete',
-                'required' => false,
-                'value' => null,
-                'data-url' => '/blogs/lookup.json?id=custom_select&value=custom_select',
-            ],
-        ];
-        $this->assertSame($expected, $fields);
+        $expected['category_id']['data-url'] = '/custom';
+        $this->assertEquals($expected, $fields);
     }
 }

@@ -33,7 +33,7 @@ if ($this->exists('form.before_create')) {
         <?php endif; ?>
         <div class="row">
             <div class="col-lg-<?= $formSidebarExists ? '8' : '12' ?>">
-                <div class="row">
+                <div class="form-group">
                     <?= $this->element('form/buttons') ?>
                 </div>
             </div>

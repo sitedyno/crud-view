@@ -7,11 +7,19 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class BlogsFixture extends TestFixture
 {
-    public array $records = [
-        ['name' => '1st post', 'body' => '1st post body', 'user_id' => 1, 'created' => '2024-09-03 00:00:00'],
-        ['name' => '2nd post', 'body' => '2nd post body', 'user_id' => 1, 'created' => '2024-09-04 00:00:00'],
-        ['name' => '3rd post', 'body' => '3rd post body', 'user_id' => 1, 'created' => '2024-09-05 00:00:00'],
-        ['name' => '4th post', 'body' => '4th post body', 'user_id' => 1, 'created' => '2024-09-06 00:00:00'],
-        ['name' => '5th post', 'body' => '5th post body', 'user_id' => 1, 'created' => '2024-09-07 00:00:00'],
+    public $fields = [
+        'id' => ['type' => 'integer'],
+        'is_active' => ['type' => 'boolean', 'default' => true, 'null' => false],
+        'name' => ['type' => 'string', 'length' => 255, 'null' => false],
+        'body' => ['type' => 'text', 'null' => false],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+    ];
+
+    public $records = [
+        ['name' => '1st post', 'body' => '1st post body'],
+        ['name' => '2nd post', 'body' => '2nd post body'],
+        ['name' => '3rd post', 'body' => '3rd post body'],
+        ['name' => '4th post', 'body' => '4th post body'],
+        ['name' => '5th post', 'body' => '5th post body'],
     ];
 }

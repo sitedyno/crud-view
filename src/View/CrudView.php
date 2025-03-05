@@ -24,7 +24,7 @@ class CrudView extends View implements EventListenerInterface
      *
      * @var string
      */
-    protected string $layout = 'CrudView.default';
+    protected $layout = 'CrudView.default';
 
     /**
      * Initialization hook method.
@@ -63,7 +63,7 @@ class CrudView extends View implements EventListenerInterface
      *
      * @return void
      */
-    public function beforeLayout(): void
+    public function beforeLayout()
     {
         $this->_loadAssets();
     }

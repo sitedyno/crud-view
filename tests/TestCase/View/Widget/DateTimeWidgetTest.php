@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace CrudView\Test\TestCase\View\Widget;
 
 use Cake\Core\Configure;
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 use Cake\TestSuite\TestCase;
 use Cake\View\Form\ContextInterface;
 use Cake\View\StringTemplate;
 use Cake\View\Widget\SelectBoxWidget;
 use CrudView\View\Widget\DateTimeWidget;
 use FriendsOfCake\TestUtilities\CompareTrait;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * DateTimeWidgetTest
@@ -31,10 +30,10 @@ class DateTimeWidgetTest extends TestCase
     /**
      * testRender
      *
+     * @dataProvider renderProvider
      * @param string $compareFileName
      * @param array $data
      */
-    #[DataProvider('renderProvider')]
     public function testRenderSimple($compareFileName, $data)
     {
         /** @var \Cake\View\Form\ContextInterface $context */
@@ -56,7 +55,7 @@ class DateTimeWidgetTest extends TestCase
      *
      * @return array
      */
-    public static function renderProvider()
+    public function renderProvider()
     {
         return [
             [
@@ -84,7 +83,7 @@ class DateTimeWidgetTest extends TestCase
                 [
                     'id' => 'the-id3',
                     'name' => 'the-name3',
-                    'val' => new Date('2000-01-01'),
+                    'val' => new FrozenDate('2000-01-01'),
                     'type' => 'date',
                     'required' => false,
                 ],

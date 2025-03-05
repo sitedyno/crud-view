@@ -10,14 +10,14 @@ class MenuDropdown
      *
      * @var string
      **/
-    protected string $title;
+    protected $title;
 
     /**
      * Array of MenuDivider|MenuItem entries
      *
      * @var array
      **/
-    protected array $entries = [];
+    protected $entries = [];
 
     /**
      * Contains an HTML link.

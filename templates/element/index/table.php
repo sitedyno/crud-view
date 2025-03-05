@@ -1,6 +1,3 @@
-<?php
-use Cake\Utility\Inflector;
-?>
 <div class="table-responsive">
     <table class="table table-hover table-sm">
     <thead>
@@ -13,7 +10,7 @@ use Cake\Utility\Inflector;
                 <th>
                     <?php
                     if (!empty($options['disableSort'])) {
-                        echo $options['title'] ?? Inflector::humanize(str_replace('.', '_', $field));
+                        echo $options['title'] ?? \Cake\Utility\Inflector::humanize($field);
                     } else {
                         echo $this->Paginator->sort($field, $options['title'] ?? null, $options);
                     }

@@ -4,21 +4,20 @@ if (empty($searchInputs)) {
 }
 ?>
 
-<div class="search-filters mb-3">
+<div class="search-filters">
     <?php
     $searchOptions = $searchOptions ?? [];
-    $searchOptions += ['align' => 'inline', 'id' => 'searchFilter'];
+    $searchOptions += ['class' => 'form-inline', 'id' => 'searchFilter'];
+
+    echo $this->Form->create(null, $searchOptions);
+    echo $this->Form->hidden('_search');
     ?>
 
-    <?= $this->Form->create(null, $searchOptions) ?>
-    <?= $this->Form->hidden('_search') ?>
-
     <?= $this->Form->controls($searchInputs, ['fieldset' => false]); ?>
-
-    <div class="col-auto">
+    <div class="form-group">
         <?= $this->Form->button(__d('crud', 'Filter results'), ['type' => 'submit', 'class' => 'btn btn-primary']); ?>
         <?php if ($this->Search->isSearch()) : ?>
-            <?= $this->Search->resetLink(__d('crud', 'Reset'), ['class' => 'btn btn-secondary']) ?>
+            <?= $this->Search->resetLink(__d('crud', 'Reset'), ['class' => 'btn btn-primary']) ?>
         <?php endif ?>
     </div>
 

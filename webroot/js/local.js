@@ -14,15 +14,13 @@ var CrudView = {
     },
 
     flatpickr: function (selector) {
-        if ($.flatpickr) {
-            $(selector).flatpickr();
-        }
+        $(selector).flatpickr();
     },
 
     select2: function (selector) {
         $(selector).each(function () {
             var $this = $(this),
-                config = {theme: 'bootstrap-5'};
+                config = {theme: 'bootstrap4'};
 
             if (!$this.prop('multiple') && $this.find('option:first').val() === '') {
                 config.allowClear = true;
@@ -65,7 +63,7 @@ var CrudView = {
             var $ele = $(ele);
 
             $ele.select2({
-                theme: 'bootstrap-5',
+                theme: 'bootstrap4',
                 minimumInputLength: 1,
                 ajax: {
                     delay: 250,
@@ -107,25 +105,24 @@ var CrudView = {
     },
 
     dirtyForms: function () {
-        if ($.DirtyForms) {
-            $.DirtyForms.dialog = false;
-            $('form[data-dirty-check=1]').dirtyForms();
-        }
+        $.DirtyForms.dialog = false;
+        $('form[data-dirty-check=1]').dirtyForms();
     },
 
     dropdown: function () {
+        $('.dropdown-toggle').dropdown();
+
         // recommended hack to get dropdowns correctly work inside responsive table
         $('.table-responsive').on('show.bs.dropdown', function () {
-            $('.table-responsive').css('overflow', 'inherit');
+            $('.table-responsive').css( "overflow", "inherit" );
         });
         $('.table-responsive').on('hide.bs.dropdown', function () {
-            $('.table-responsive').css('overflow', 'auto');
-        });
+            $('.table-responsive').css( "overflow", "auto" );
+        })
     },
 
     tooltip: function () {
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+        $('[data-toggle="tooltip"]').tooltip();
     },
 
     initialize: function () {

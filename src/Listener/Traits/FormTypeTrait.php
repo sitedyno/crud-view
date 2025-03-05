@@ -6,7 +6,6 @@ namespace CrudView\Listener\Traits;
 use Cake\Controller\Controller;
 use Crud\Action\BaseAction;
 use Crud\Action\EditAction;
-use function Cake\I18n\__d;
 
 trait FormTypeTrait
 {
@@ -161,9 +160,9 @@ trait FormTypeTrait
     /**
      * Get form url.
      *
-     * @return array|string|null
+     * @return mixed
      */
-    protected function _getFormUrl(): array|string|null
+    protected function _getFormUrl()
     {
         $action = $this->_action();
 

@@ -14,18 +14,16 @@ class TablesListCell extends Cell
      *
      * @param array $tables Tables list.
      * @param array $blacklist Blacklisted tables list.
-     * @return void
+     * @return $this
      */
-    public function display(?array $tables = null, ?array $blacklist = null): void
+    public function display(?array $tables = null, ?array $blacklist = null)
     {
-        if ($tables === null) {
-            /** @var \Cake\Database\Connection $connection */
+        if (empty($tables)) {
             $connection = ConnectionManager::get('default');
             $schema = $connection->getSchemaCollection();
             $tables = $schema->listTables();
-            sort($tables);
+            ksort($tables);
 
-            /** @psalm-suppress RiskyTruthyFalsyComparison */
             if (!empty($blacklist)) {
                 $tables = array_diff($tables, $blacklist);
             }
@@ -50,6 +48,6 @@ class TablesListCell extends Cell
             $normal[$table] = $config;
         }
 
-        $this->set('tables', $normal);
+        return $this->set('tables', $normal);
     }
 }

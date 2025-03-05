@@ -6,7 +6,6 @@ namespace CrudView\Dashboard;
 use Cake\Datasource\EntityTrait;
 use Cake\View\Cell;
 use InvalidArgumentException;
-use function Cake\I18n\__d;
 
 class Dashboard
 {
@@ -68,7 +67,7 @@ class Dashboard
      * @return int
      * @throws \InvalidArgumentException the column count is invalid
      */
-    protected function _setColumns(int $value): int
+    protected function _setColumns(int $value)
     {
         $columnMap = [
             1 => 12,
